@@ -31,7 +31,54 @@ h = 6
 w = 6;
 Matrix = [[Cell("healthy", randrange(20, windowHeight-20),randrange(20, windowWidth-20)) for x in range(h)] for y in range(w)] 
 
-def healing():
+def tCell():
+    global windowHeight
+    global windowWidth
+
+    x3 = -10
+    y3 = 266
+    tCell = Cell("healthy,", x3, x3)
+    drawtCell = Circle(Point(tCell.X, tCell.Y), 8)
+    drawtCell.draw(win)
+
+    for i in range(0,20):
+        x3 = x3 + 1
+
+        drawtCell.undraw()
+        drawtCell = Circle(Point(x3,y3), 8)
+        drawtCell.setFill('blue')
+        drawtCell.draw(win)
+    
+        
+
+    while True:
+        c1 = randrange(-10, 10)
+        d1 = randrange(-10, 10)
+        x3 = x3 + c1
+        y3 = y3 + d1
+
+
+        
+
+        if (x3 > windowWidth):
+            x3 = 0
+             
+        if (x3 < 0):
+            x3 = windowWidth
+             
+        if (y3 > windowHeight):
+            y3 = 0
+                
+        if (y3 < 0):
+            y3 = windowHeight
+
+        drawtCell.undraw()
+        drawtCell = Circle(Point(x3,y3), 8)
+        drawtCell.setFill('blue')
+        drawtCell.draw(win)
+        time.sleep(0.2)
+        drawtCell.move(c1,d1)       
+def bCell():
     global windowHeight
     global windowWidth
 
@@ -41,41 +88,21 @@ def healing():
     drawbCell = Circle(Point(bCell.X, bCell.Y), 15)
     drawbCell.draw(win)
 
-    x3 = -10
-    y3 = 266
-    tCell = Cell("healthy,", x3, x3)
-    drawtCell = Circle(Point(tCell.X, tCell.Y), 8)
-    drawtCell.draw(win)
-
-    time.sleep(5)
     for i in range(0,20):
-        x2 += 1
-        x3 += 1
+        x2 = x2 + 1
 
 
         drawbCell.undraw()
         drawbCell = Circle(Point(x2,y2), 15)
         drawbCell.setFill('yellow')
         drawbCell.draw(win)
-        drawbCell.move(a1,b1)
-
-        drawtCell.undraw()
-        drawtCell = Circle(Point(x3,y3), 8)
-        drawtCell.setFill('blue')
-        drawtCell.draw(win)
-        drawtCell.move(c1,d1)
-    
         
 
     while True:
         a1 = randrange(-10, 10)
         b1 = randrange(-10, 10)
-        c1 = randrange(-10, 10)
-        d1 = randrange(-10, 10)
         x2 = x2 + a1
         y2 = y2 + b1
-        x3 = x3 + c1
-        x4 = x4 + d1
 
 
         if (x2 > windowWidth):
@@ -90,17 +117,6 @@ def healing():
         if (y2 < 0):
             y2 = windowHeight
 
-        if (x3 > windowWidth):
-            x3 = 0
-             
-        if (x3 < 0):
-            x3 = windowWidth
-             
-        if (y3 > windowHeight):
-            y3 = 0
-                
-        if (y3 < 0):
-            y3 = windowHeight
 
         drawbCell.undraw()
         drawbCell = Circle(Point(x2,y2), 15)
@@ -108,18 +124,6 @@ def healing():
         drawbCell.draw(win)
         time.sleep(0.2)
         drawbCell.move(a1,b1)
-
-        drawtCell.undraw()
-        drawtCell = Circle(Point(x3,y3), 8)
-        drawtCell.setFill('blue')
-        drawtCell.draw(win)
-        time.sleep(0.2)
-        drawtCell.move(c1,d1)
-    
-       
-
-
-
 
 def drawCell():
     global x1
@@ -138,6 +142,7 @@ def drawCell():
                drawCell = Circle(Point(cell.X, cell.Y), 10)
                drawCell.setOutline('red')
                drawCell.draw(win)
+           
               
 
 
@@ -179,8 +184,6 @@ def draw():
          path.move(a,b)
          printPoint(x1,y1)
 
-         
 
 draw()
-
 
