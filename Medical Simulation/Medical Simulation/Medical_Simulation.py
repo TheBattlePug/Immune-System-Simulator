@@ -26,10 +26,16 @@ x1 = 50
 y1 = 100
 pathogen1 = Pathogen(x1, y1)
 
-# Creates a matrix of a defined height and width
-h = 6
-w = 6;
-Matrix = [[Cell("healthy", randrange(20, windowHeight-20),randrange(20, windowWidth-20)) for x in range(h)] for y in range(w)] 
+# Creates an array of a cells
+cellAmount = 5
+cellArray = []
+
+for i in range(0, cellAmount):
+    h = randrange(20, windowHeight-20)
+    w = randrange(20, windowWidth-20)
+    s = Cell("healthy", w, h)
+    cellArray.append(s)
+
 
 def tCell():
     global windowHeight
@@ -128,9 +134,9 @@ def bCell():
 def drawCell():
     global x1
     global x2
-    for i in range(0,h):
-        for j in range(0,w):
-           cell = Matrix[i][j]
+
+    for i in range(0,cellAmount):
+           cell = cellArray[i]
            drawCell = Circle(Point(cell.X, cell.Y), 10)
            drawCell.draw(win)
 
@@ -183,7 +189,6 @@ def draw():
          time.sleep(0.2)
          path.move(a,b)
          printPoint(x1,y1)
-
 
 draw()
 
