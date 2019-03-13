@@ -17,17 +17,24 @@ class Pathogen:
     def __init__ (self, x, y):
         self.X = x
         self.Y = y
+    path = 0
 
 def printPoint(x, y):
     print("(", x, ",", y, ")")
 
+#Creates an array of pathogens that develope over time   
+pathogenArray = []
+pathogen = Pathogen(50, 100)
+pathogenArray.append(pathogen)
 
-x1 = 50
-y1 = 100
-pathogen1 = Pathogen(x1, y1)
+p = Point(pathogen.X, pathogen.Y)
+path = Circle(p, 5)
+path.draw(win)
+path.setFill('red')
+pathogen.path = path
 
 # Creates an array of a cells
-cellAmount = 5
+cellAmount = 25
 cellArray = []
 
 for i in range(0, cellAmount):
@@ -132,10 +139,11 @@ def bCell():
         drawbCell.move(a1,b1)
 
 def drawCell():
-    global x1
-    global x2
+    
+    x1 = pathogenArray[0].X
+    y1 = pathogenArray[0].Y
 
-    for i in range(0,cellAmount):
+    for i in range(0,len(cellArray)):
            cell = cellArray[i]
            drawCell = Circle(Point(cell.X, cell.Y), 10)
            drawCell.draw(win)
@@ -150,45 +158,48 @@ def drawCell():
                drawCell.draw(win)
            
               
+def movePathogen():
+    
+    for i in range(0, len(pathogenArray)):
+        pathogen = pathogenArray[i]
+ 
+        a = randrange(-10,20)
+        newX = pathogen.X + a
+        b = randrange(-10,20)      
+        newY = pathogen.Y + b
+
+        if (newX > windowWidth):
+            newX = 0
+             
+        if (newX < 0):
+            newX = windowWidth
+             
+        if (newY > windowHeight):
+            newY = 0
+                
+        if (newY < 0):
+            newY = windowHeight
+        
+        path = pathogen.path;
+        path.undraw()
+        path = Circle(Point(newX,newY), 5)
+        path.setFill('red')
+        path.draw(win)
+        pathogen.path = path
+        pathogen.X = newX
+        pathogen.Y = newY
+
 
 
 def draw():
-    global x1
-    global y1
-    global pathogen1
-        
-    p = Point(pathogen1.X, pathogen1.Y)
-    path = Circle(p, 5)
-    path.draw(win)
-    path.setFill('red')
+    
 
     while True:
-         a = randrange(-10,20)
-         x1 = x1 + a
-         b = randrange(-10,20)      
-         y1 = y1 + b
-
-         if (x1 > windowWidth):
-             x1 = 0
-             
-         if (x1 < 0):
-             x1 = windowWidth
-             
-         if (y1 > windowHeight):
-             y1 = 0
-                
-         if (y1 < 0):
-             y1 = windowHeight
-         
-         path.undraw()
-         path = Circle(Point(x1,y1), 5)
-         path.setFill('red')
-         path.draw(win)
-
+         movePathogen()
          drawCell()
          time.sleep(0.2)
-         path.move(a,b)
-         printPoint(x1,y1)
+         
+         
 
 draw()
 
