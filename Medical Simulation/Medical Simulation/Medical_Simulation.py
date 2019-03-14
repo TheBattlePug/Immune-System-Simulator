@@ -14,6 +14,7 @@ class CellType(Enum):
     HealthyBody = 3
     InfectedBody = 4
     Pathogen = 5
+    Dead = 6
     
 
 class Cell:
@@ -37,6 +38,10 @@ class Cell:
         size = 1
         color = 'black'
 
+        if (self.Type == CellType.Dead):
+            self.Visual.undraw()
+            return
+
         if (self.Type == CellType.T):
             size = 8
             color = 'blue'
@@ -57,6 +62,7 @@ class Cell:
             size = 5
             color = 'red'
         
+
         p = Point(x, y)
         visual = Circle(p, size)
 
@@ -70,6 +76,8 @@ class Cell:
         self.X = x
         self.Y = y
     
+    def Kill(self):
+        self.Type = CellType.Dead
 
 class Pathogen:
     def __init__ (self, x, y):
@@ -106,13 +114,18 @@ def redrawCell():
     x1 = pathogenArray[0].X
     y1 = pathogenArray[0].Y
 
+    
+
     for i in range(0,len(cellArray)):
            cell = cellArray[i]
            
            if (abs(x1-cell.X)<=15 and abs(y1-cell.Y)<=15):
                cell.Type = CellType.InfectedBody
-           cell.Draw(cell.X, cell.Y)
-
+               cell.Draw(cell.X, cell.Y)
+            
+           if (abs(tCell.X-cell.X)<=18 and abs(tCell.Y-cell.Y)<=18):
+               if (cell.Type == CellType.InfectedBody):
+                   cell.Kill()
 
            
 def adjust(position, limit):
@@ -155,6 +168,7 @@ def movetCell():
         newY = adjust(newY, windowHeight)
 
         tCell.Move(newX, newY)
+
 
 
 def doAll():
