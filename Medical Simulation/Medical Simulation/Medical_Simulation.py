@@ -1,18 +1,75 @@
 from graphics import *
 from random import *
+from enum import *
 import time
 
-windowHeight = 400
-windowWidth = 600
+windowHeight = 300
+windowWidth = 400
 
 win = GraphWin("Human Body", windowWidth, windowHeight)
 
+class CellType(Enum):
+    T = 1
+    B = 2
+    HealthyBody = 3
+    InfectedBody = 4
+    Pathogen = 5
+    
+
 class Cell:
-    def __init__ (self, state, x, y):
-        self.State = state
+    def __init__ (self, type, x, y):
+        self.Type = type
         self.X = x
         self.Y = y
-    path = 0
+        self.Visual = 0
+
+        self.Draw(x, y)
+   
+    def Move(self, newX, newY):
+        
+        visual = self.Visual;
+        visual.undraw()
+        self.Draw(newX, newY)
+        
+
+    def Draw(self, x, y):
+        
+        size = 1
+        color = 'black'
+
+        if (self.Type == CellType.T):
+            size = 8
+            color = 'blue'
+
+        if (self.Type == CellType.B): 
+            size = 15
+            color = 'yellow'
+       
+        if (self.Type == CellType.HealthyBody): 
+            size = 10
+            color = 'black'
+
+        if (self.Type == CellType.InfectedBody): 
+            size = 10
+            color = 'red'
+
+        if (self.Type == CellType.Pathogen): 
+            size = 5
+            color = 'red'
+        
+        p = Point(x, y)
+        visual = Circle(p, size)
+
+        if (self.Type == CellType.HealthyBody or self.Type == CellType.InfectedBody):
+            visual.setOutline(color)
+        else: 
+            visual.setFill(color)
+
+        visual.draw(win)
+        self.Visual = visual
+        self.X = x
+        self.Y = y
+    
 
 class Pathogen:
     def __init__ (self, x, y):
@@ -25,14 +82,8 @@ def printPoint(x, y):
 
 #Creates an array of pathogens that develope over time   
 pathogenArray = []
-pathogen = Pathogen(50, 100)
+pathogen = Cell(CellType.Pathogen, 50, 100)
 pathogenArray.append(pathogen)
-
-p = Point(pathogen.X, pathogen.Y)
-path = Circle(p, 5)
-path.draw(win)
-path.setFill('red')
-pathogen.path = path
 
 # Creates an array of a cells
 cellAmount = 25
@@ -41,151 +92,80 @@ cellArray = []
 for i in range(0, cellAmount):
     h = randrange(20, windowHeight-20)
     w = randrange(20, windowWidth-20)
-    s = Cell("healthy", w, h)
+    s = Cell(CellType.HealthyBody, w, h)
     cellArray.append(s)
 
 #tCell parameters
-tCell = Cell("healthy,", -10, windowHeight/2)
-tCell.path = Circle(Point(tCell.X, tCell.Y), 8)
-tCell.path.setFill('blue')
+tCell = Cell(CellType.T, -10, windowHeight/2)
 
 
-def movetCell():
-    
-    a = randrange(-10,20)
-    newX = tCell.X + a
-    b = randrange(-10,20)      
-    newY = tCell.Y + b
+   
 
-    if (newX > windowWidth):
-        newX = 0
-             
-    if (newX < 0):
-        newX = windowWidth
-             
-    if (newY > windowHeight):
-        newY = 0
-                
-    if (newY < 0):
-        newY = windowHeight
-        
-    path = tCell.path;
-    path.undraw()
-    path = Circle(Point(newX,newY), 8)
-    path.setFill('blue')
-    path.draw(win)
-    tCell.path = path
-    tCell.X = newX
-    tCell.Y = newY
-           
-def bCell():
-    global windowHeight
-    global windowWidth
-
-    x2 = -10
-    y2 = 133
-    bCell = Cell("healthy,", x2, y2)
-    drawbCell = Circle(Point(bCell.X, bCell.Y), 15)
-    drawbCell.draw(win)
-
-    for i in range(0,20):
-        x2 = x2 + 1
-
-
-        drawbCell.undraw()
-        drawbCell = Circle(Point(x2,y2), 15)
-        drawbCell.setFill('yellow')
-        drawbCell.draw(win)
-        
-
-    
-    a1 = randrange(-10, 10)
-    b1 = randrange(-10, 10)
-    x2 = x2 + a1
-    y2 = y2 + b1
-
-
-    if (x2 > windowWidth):
-        x2 = 0
-             
-    if (x2 < 0):
-        x2 = windowWidth
-             
-    if (y2 > windowHeight):
-        y2 = 0
-                
-    if (y2 < 0):
-        y2 = windowHeight
-
-
-    drawbCell.undraw()
-    drawbCell = Circle(Point(x2,y2), 15)
-    drawbCell.setFill('yellow')
-    drawbCell.draw(win)
-    
-
-def drawCell():
+def redrawCell():
     
     x1 = pathogenArray[0].X
     y1 = pathogenArray[0].Y
 
     for i in range(0,len(cellArray)):
            cell = cellArray[i]
-           drawCell = Circle(Point(cell.X, cell.Y), 10)
-           drawCell.draw(win)
-
-           if (abs(x1-cell.X)<=15 and abs(y1-cell.Y)<=15):
-               cell.State = "infected"
-
-           if (cell.State == "infected"):
-               drawCell.undraw()
-               drawCell = Circle(Point(cell.X, cell.Y), 10)
-               drawCell.setOutline('red')
-               drawCell.draw(win)
            
+           if (abs(x1-cell.X)<=15 and abs(y1-cell.Y)<=15):
+               cell.Type = CellType.InfectedBody
+           cell.Draw(cell.X, cell.Y)
+
+
+           
+def adjust(position, limit):
+    ret = position
+
+    if (position > limit):
+        ret = limit - 10
+             
+    if (position < 0):
+        ret = 10
+            
+    return ret  
+              
+              
+
+    
               
 def movePathogen():
     
     for i in range(0, len(pathogenArray)):
         pathogen = pathogenArray[i]
  
-        a = randrange(-10,20)
+        a = randrange(-20,20)
         newX = pathogen.X + a
-        b = randrange(-10,20)      
+        b = randrange(-20,20)      
         newY = pathogen.Y + b
 
-        if (newX > windowWidth):
-            newX = 0
-             
-        if (newX < 0):
-            newX = windowWidth
-             
-        if (newY > windowHeight):
-            newY = 0
-                
-        if (newY < 0):
-            newY = windowHeight
-        
-        path = pathogen.path;
-        path.undraw()
-        path = Circle(Point(newX,newY), 5)
-        path.setFill('red')
-        path.draw(win)
-        pathogen.path = path
-        pathogen.X = newX
-        pathogen.Y = newY
+        newX = adjust(newX, windowWidth)
+        newY = adjust(newY, windowHeight)
+        pathogen.Move(newX, newY)
+
+def movetCell():
+    
+        a = randrange(-40,40)
+        newX = tCell.X + a
+        b = randrange(-40,40)      
+        newY = tCell.Y + b
+
+        newX = adjust(newX, windowWidth)
+        newY = adjust(newY, windowHeight)
+
+        tCell.Move(newX, newY)
 
 
-
-def draw():
+def doAll():
     
 
     while True:
          movePathogen()
          movetCell()
-         drawCell()
+         redrawCell()
          time.sleep(0.2)
          
 
-draw()
+doAll()
 
