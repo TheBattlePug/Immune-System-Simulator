@@ -12,7 +12,8 @@ class Cell:
         self.State = state
         self.X = x
         self.Y = y
-   
+    path = 0
+
 class Pathogen:
     def __init__ (self, x, y):
         self.X = x
@@ -43,54 +44,40 @@ for i in range(0, cellAmount):
     s = Cell("healthy", w, h)
     cellArray.append(s)
 
+#tCell parameters
+tCell = Cell("healthy,", -10, windowHeight/2)
+tCell.path = Circle(Point(tCell.X, tCell.Y), 8)
+tCell.path.setFill('blue')
 
-def tCell():
-    global windowHeight
-    global windowWidth
 
-    x3 = -10
-    y3 = 266
-    tCell = Cell("healthy,", x3, x3)
-    drawtCell = Circle(Point(tCell.X, tCell.Y), 8)
-    drawtCell.draw(win)
-
-    for i in range(0,20):
-        x3 = x3 + 1
-
-        drawtCell.undraw()
-        drawtCell = Circle(Point(x3,y3), 8)
-        drawtCell.setFill('blue')
-        drawtCell.draw(win)
+def movetCell():
     
-        
+    a = randrange(-10,20)
+    newX = tCell.X + a
+    b = randrange(-10,20)      
+    newY = tCell.Y + b
 
-    while True:
-        c1 = randrange(-10, 10)
-        d1 = randrange(-10, 10)
-        x3 = x3 + c1
-        y3 = y3 + d1
-
-
-        
-
-        if (x3 > windowWidth):
-            x3 = 0
+    if (newX > windowWidth):
+        newX = 0
              
-        if (x3 < 0):
-            x3 = windowWidth
+    if (newX < 0):
+        newX = windowWidth
              
-        if (y3 > windowHeight):
-            y3 = 0
+    if (newY > windowHeight):
+        newY = 0
                 
-        if (y3 < 0):
-            y3 = windowHeight
-
-        drawtCell.undraw()
-        drawtCell = Circle(Point(x3,y3), 8)
-        drawtCell.setFill('blue')
-        drawtCell.draw(win)
-        time.sleep(0.2)
-        drawtCell.move(c1,d1)       
+    if (newY < 0):
+        newY = windowHeight
+        
+    path = tCell.path;
+    path.undraw()
+    path = Circle(Point(newX,newY), 8)
+    path.setFill('blue')
+    path.draw(win)
+    tCell.path = path
+    tCell.X = newX
+    tCell.Y = newY
+           
 def bCell():
     global windowHeight
     global windowWidth
@@ -111,32 +98,31 @@ def bCell():
         drawbCell.draw(win)
         
 
-    while True:
-        a1 = randrange(-10, 10)
-        b1 = randrange(-10, 10)
-        x2 = x2 + a1
-        y2 = y2 + b1
+    
+    a1 = randrange(-10, 10)
+    b1 = randrange(-10, 10)
+    x2 = x2 + a1
+    y2 = y2 + b1
 
 
-        if (x2 > windowWidth):
-            x2 = 0
+    if (x2 > windowWidth):
+        x2 = 0
              
-        if (x2 < 0):
-            x2 = windowWidth
+    if (x2 < 0):
+        x2 = windowWidth
              
-        if (y2 > windowHeight):
-            y2 = 0
+    if (y2 > windowHeight):
+        y2 = 0
                 
-        if (y2 < 0):
-            y2 = windowHeight
+    if (y2 < 0):
+        y2 = windowHeight
 
 
-        drawbCell.undraw()
-        drawbCell = Circle(Point(x2,y2), 15)
-        drawbCell.setFill('yellow')
-        drawbCell.draw(win)
-        time.sleep(0.2)
-        drawbCell.move(a1,b1)
+    drawbCell.undraw()
+    drawbCell = Circle(Point(x2,y2), 15)
+    drawbCell.setFill('yellow')
+    drawbCell.draw(win)
+    
 
 def drawCell():
     
@@ -196,9 +182,9 @@ def draw():
 
     while True:
          movePathogen()
+         movetCell()
          drawCell()
          time.sleep(0.2)
-         
          
 
 draw()
