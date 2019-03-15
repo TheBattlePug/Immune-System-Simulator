@@ -39,8 +39,8 @@ class Cell:
         color = 'black'
 
         if (self.Type == CellType.Dead):
-            self.Visual.undraw()
-            return
+            size = 10
+            color = 'gray'
 
         if (self.Type == CellType.T):
             size = 8
@@ -117,16 +117,17 @@ def redrawCell():
     
 
     for i in range(0,len(cellArray)):
-           cell = cellArray[i]
+        cell = cellArray[i]
+        
+        # if patogen touches a healty cell, mark cell as infected
+        if (abs(x1-cell.X)<=15 and abs(y1-cell.Y)<=15 and cell.Type == CellType.HealthyBody):
+            cell.Type = CellType.InfectedBody
+               
+        # if tCell touches an infected cell, mark as dead.   
+        if (abs(tCell.X-cell.X)<=18 and abs(tCell.Y-cell.Y)<=18 and cell.Type == CellType.InfectedBody):
+                cell.Kill()
            
-           if (abs(x1-cell.X)<=15 and abs(y1-cell.Y)<=15):
-               cell.Type = CellType.InfectedBody
-               cell.Draw(cell.X, cell.Y)
-            
-           if (abs(tCell.X-cell.X)<=18 and abs(tCell.Y-cell.Y)<=18):
-               if (cell.Type == CellType.InfectedBody):
-                   cell.Kill()
-
+        cell.Draw(cell.X, cell.Y)
            
 def adjust(position, limit):
     ret = position
