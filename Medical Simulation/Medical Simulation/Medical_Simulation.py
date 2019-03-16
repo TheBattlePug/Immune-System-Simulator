@@ -16,7 +16,7 @@ class CellType(Enum):
     Pathogen = 5
     Dead = 6
     PathogenSpawned = 7
-
+    DeadPathogen = 8
 class Cell:
     def __init__ (self, type, x, y):
         self.Type = type
@@ -27,11 +27,14 @@ class Cell:
         self.Draw(x, y)
    
     def Move(self, newX, newY):
-        
-        visual = self.Visual;
-        visual.undraw()
-        self.Draw(newX, newY)
-        
+        if (self.Type != CellType.DeadPathogen):
+            visual = self.Visual;
+            visual.undraw()
+            self.Draw(newX, newY)
+        else:
+            self.Visual.undraw()
+            
+                
 
     def Draw(self, x, y):
         
@@ -66,8 +69,6 @@ class Cell:
                 pathogenArray.append(pathogen2)
                 
                 
-
-
         if (self.Type == CellType.Pathogen): 
             size = 5
             color = 'red'
@@ -75,9 +76,8 @@ class Cell:
         if (self.Type == CellType.PathogenSpawned):
             size = 10
             color = 'black'
-        
-        
 
+        
         p = Point(x, y)
         visual = Circle(p, size)
 
@@ -135,13 +135,13 @@ def redrawCell():
         cell = cellArray[i]
         
         for j in range(0, len(pathogenArray)):
-            x1 = pathogenArray[j].X
-            y1 = pathogenArray[j].Y
+            pathogen = pathogenArray[j]
+            
 
-            # if pathogen touches a healty cell, mark cell as infected
-            if (abs(x1-cell.X)<=15 and abs(y1-cell.Y)<=15 and cell.Type == CellType.HealthyBody):
+            # if pathogen touches a healty cell, mark cell as infected and kill mark pathogen as dead.
+            if (abs(pathogen.X-cell.X)<=15 and abs(pathogen.Y-cell.Y)<=15 and cell.Type == CellType.HealthyBody):
                 cell.Type = CellType.InfectedBody
-               
+                pathogen.Type = CellType.DeadPathogen
         # if tCell touches an infected cell, mark as dead.   
         if (abs(tCell.X-cell.X)<=18 and abs(tCell.Y-cell.Y)<=18 and cell.Type == CellType.InfectedBody):
                 cell.Type = CellType.Dead
