@@ -90,7 +90,7 @@ def printPoint(x, y):
 
 #Creates an array of pathogens that develope over time   
 pathogenArray = []
-pathogen = Cell(CellType.Pathogen, 50, 100)
+pathogen = Cell(CellType.Pathogen, windowWidth/2, windowHeight/2)
 pathogenArray.append(pathogen)
 
 # Creates an array of a cells
@@ -111,17 +111,21 @@ tCell = Cell(CellType.T, -10, windowHeight/2)
 
 def redrawCell():
     
-    x1 = pathogenArray[0].X
-    y1 = pathogenArray[0].Y
+    
+    
 
     
 
     for i in range(0,len(cellArray)):
         cell = cellArray[i]
         
-        # if patogen touches a healty cell, mark cell as infected
-        if (abs(x1-cell.X)<=15 and abs(y1-cell.Y)<=15 and cell.Type == CellType.HealthyBody):
-            cell.Type = CellType.InfectedBody
+        for j in range(0, len(pathogenArray)):
+            x1 = pathogenArray[j].X
+            y1 = pathogenArray[j].Y
+
+            # if pathogen touches a healty cell, mark cell as infected
+            if (abs(x1-cell.X)<=15 and abs(y1-cell.Y)<=15 and cell.Type == CellType.HealthyBody):
+                cell.Type = CellType.InfectedBody
                
         # if tCell touches an infected cell, mark as dead.   
         if (abs(tCell.X-cell.X)<=18 and abs(tCell.Y-cell.Y)<=18 and cell.Type == CellType.InfectedBody):
