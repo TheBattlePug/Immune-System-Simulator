@@ -15,7 +15,7 @@ class CellType(Enum):
     InfectedBody = 4
     Pathogen = 5
     Dead = 6
-    
+    PathogenSpawned = 7
 
 class Cell:
     def __init__ (self, type, x, y):
@@ -23,7 +23,7 @@ class Cell:
         self.X = x
         self.Y = y
         self.Visual = 0
-
+        self.Timer = 0
         self.Draw(x, y)
    
     def Move(self, newX, newY):
@@ -37,7 +37,7 @@ class Cell:
         
         size = 1
         color = 'black'
-
+        
         if (self.Type == CellType.Dead):
             size = 10
             color = 'gray'
@@ -57,10 +57,25 @@ class Cell:
         if (self.Type == CellType.InfectedBody): 
             size = 10
             color = 'red'
+            self.Timer = self.Timer + 1
+            if (self.Timer == 50):
+                self.Type = CellType.PathogenSpawned
+                pathogen1 = Cell(CellType.Pathogen, self.X, self.Y)
+                pathogenArray.append(pathogen1)
+                pathogen2 = Cell(CellType.Pathogen, self.X, self.Y)
+                pathogenArray.append(pathogen2)
+                
+                
+
 
         if (self.Type == CellType.Pathogen): 
             size = 5
             color = 'red'
+
+        if (self.Type == CellType.PathogenSpawned):
+            size = 10
+            color = 'black'
+        
         
 
         p = Point(x, y)
