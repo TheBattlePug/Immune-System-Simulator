@@ -26,15 +26,39 @@ class Cell:
         self.Timer = 0
         self.Draw(x, y)
    
-    def Move(self, newX, newY):
-        if (self.Type != CellType.DeadPathogen):
+    #def Move(self, newX, newY):
+    #    if (self.Type != CellType.DeadPathogen):
+    #        visual = self.Visual;
+    #        visual.undraw()
+    #        self.Draw(newX, newY)
+    #    else:
+    #        self.Visual.undraw()
+            
+    def Move(self):
+        if (self.Type == CellType.B or self.Type == CellType.T or self.Type == CellType.Pathogen):
+            speed = 0
+            if (self.Type == CellType.B):
+                speed = 10
+            if (self.Type == CellType.T):
+                speed = 40
+            if (self.Type == CellType.Pathogen):
+                speed = 30
+
+            a = randrange( 0 - speed, speed)
+            newX = self.X + a
+            b = randrange( 0 - speed, speed)      
+            newY = self.Y + b
+
+            newX = adjust(newX, windowWidth)
+            newY = adjust(newY, windowHeight)
+
             visual = self.Visual;
             visual.undraw()
             self.Draw(newX, newY)
-        else:
-            self.Visual.undraw()
-            
-                
+
+
+        if (self.Type == CellType.DeadPathogen):
+           self.Visual.undraw()
 
     def Draw(self, x, y):
         
@@ -119,17 +143,13 @@ for i in range(0, cellAmount):
     cellArray.append(s)
 
 #tCell parameters
-tCell = Cell(CellType.T, -10, windowHeight/2)
+tCell = Cell(CellType.T, 10, windowHeight/2)
 
-
+#bCell parameters
+bCell = Cell(CellType.B, windowWidth - 10, windowHeight/2)
    
 
-def redrawCell():
-    
-    
-    
-
-    
+def redrawCell():   
 
     for i in range(0,len(cellArray)):
         cell = cellArray[i]
@@ -158,45 +178,19 @@ def adjust(position, limit):
         ret = 10
             
     return ret  
-              
-              
-
-    
-              
-def movePathogen():
-    
-    for i in range(0, len(pathogenArray)):
-        pathogen = pathogenArray[i]
- 
-        a = randrange(-20,20)
-        newX = pathogen.X + a
-        b = randrange(-20,20)      
-        newY = pathogen.Y + b
-
-        newX = adjust(newX, windowWidth)
-        newY = adjust(newY, windowHeight)
-        pathogen.Move(newX, newY)
-
-def movetCell():
-    
-        a = randrange(-40,40)
-        newX = tCell.X + a
-        b = randrange(-40,40)      
-        newY = tCell.Y + b
-
-        newX = adjust(newX, windowWidth)
-        newY = adjust(newY, windowHeight)
-
-        tCell.Move(newX, newY)
-
+         
 
 
 def doAll():
     
 
     while True:
-         movePathogen()
-         movetCell()
+         for i in range(0, len(pathogenArray)):
+             pathogen = pathogenArray[i]
+             pathogen.Move()
+         
+         tCell.Move()
+         bCell.Move()
          redrawCell()
          time.sleep(0.2)
          
