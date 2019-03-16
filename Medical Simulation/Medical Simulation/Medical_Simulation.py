@@ -76,8 +76,8 @@ class Cell:
         self.X = x
         self.Y = y
     
-    def Kill(self):
-        self.Type = CellType.Dead
+    
+        
 
 class Pathogen:
     def __init__ (self, x, y):
@@ -129,7 +129,7 @@ def redrawCell():
                
         # if tCell touches an infected cell, mark as dead.   
         if (abs(tCell.X-cell.X)<=18 and abs(tCell.Y-cell.Y)<=18 and cell.Type == CellType.InfectedBody):
-                cell.Kill()
+                cell.Type = CellType.Dead
            
         cell.Draw(cell.X, cell.Y)
            
