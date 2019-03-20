@@ -17,6 +17,8 @@ class CellType(Enum):
     Dead = 6
     PathogenSpawned = 7
     DeadPathogen = 8
+    Macrophage = 9
+
 class Cell:
     def __init__ (self, type, x, y):
         self.Type = type
@@ -35,14 +37,16 @@ class Cell:
     #        self.Visual.undraw()
             
     def Move(self):
-        if (self.Type == CellType.B or self.Type == CellType.T or self.Type == CellType.Pathogen):
+        if (self.Type == CellType.B or self.Type == CellType.T or self.Type == CellType.Pathogen or self.Type == CellType.Macrophage):
             speed = 0
             if (self.Type == CellType.B):
-                speed = 10
+                speed = 20
             if (self.Type == CellType.T):
                 speed = 40
             if (self.Type == CellType.Pathogen):
                 speed = 30
+            if (self.Type == CellType.Macrophage):
+                speed = 50
 
             a = randrange( 0 - speed, speed)
             newX = self.X + a
@@ -76,7 +80,7 @@ class Cell:
         if (self.Type == CellType.B): 
             size = 15
             color = 'yellow'
-       
+        
         if (self.Type == CellType.HealthyBody): 
             size = 10
             color = 'black'
@@ -91,7 +95,10 @@ class Cell:
                 pathogenArray.append(pathogen1)
                 pathogen2 = Cell(CellType.Pathogen, self.X, self.Y)
                 pathogenArray.append(pathogen2)
-                
+          
+        if (self.Type == CellType.Macrophage): 
+            size = 20
+            color = 'orange'
                 
         if (self.Type == CellType.Pathogen): 
             size = 5
@@ -147,6 +154,9 @@ tCell = Cell(CellType.T, 10, windowHeight/2)
 
 #bCell parameters
 bCell = Cell(CellType.B, windowWidth - 10, windowHeight/2)
+
+#Macrophage parameters
+macrophage = Cell(CellType.Macrophage, windowWidth/3, windowHeight/3)
    
 
 def redrawCell():   
@@ -162,9 +172,18 @@ def redrawCell():
             if (abs(pathogen.X-cell.X)<=15 and abs(pathogen.Y-cell.Y)<=15 and cell.Type == CellType.HealthyBody):
                 cell.Type = CellType.InfectedBody
                 pathogen.Type = CellType.DeadPathogen
+
+
+            # if macrophage touches a pathogen then it kills it.
+            if (abs(pathogen.X - macrophage.X) <= 55 and abs(pathogen.Y-macrophage.Y)<= 55):
+                pathogen.Type = CellType.DeadPathogen
+
+
         # if tCell touches an infected cell, mark as dead.   
         if (abs(tCell.X-cell.X)<=18 and abs(tCell.Y-cell.Y)<=18 and cell.Type == CellType.InfectedBody):
                 cell.Type = CellType.Dead
+
+ 
            
         cell.Draw(cell.X, cell.Y)
            
@@ -191,6 +210,7 @@ def doAll():
          
          tCell.Move()
          bCell.Move()
+         macrophage.Move()
          redrawCell()
          time.sleep(0.2)
          
