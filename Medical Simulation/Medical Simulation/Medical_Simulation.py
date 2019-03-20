@@ -6,7 +6,8 @@ import time
 windowHeight = 300
 windowWidth = 400
 
-win = GraphWin("Human Body", windowWidth, windowHeight)
+win = GraphWin("Human Body", 1000, 600)
+
 
 class CellType(Enum):
     T = 1
@@ -131,9 +132,6 @@ class Pathogen:
         self.Y = y
     path = 0
 
-def printPoint(x, y):
-    print("(", x, ",", y, ")")
-
 #Creates an array of pathogens that develope over time   
 pathogenArray = []
 pathogen = Cell(CellType.Pathogen, windowWidth/2, windowHeight/2)
@@ -197,12 +195,30 @@ def adjust(position, limit):
         ret = 10
             
     return ret  
-         
 
+
+def ShowLegend():
+    plate = Rectangle(Point(0, 0), Point(windowWidth, windowHeight))
+    plate.draw(win)
+
+    t1 = Text(Point(windowWidth + 100, 20), "Legend:")
+    t1.draw(win)
+
+    h1 = Cell(CellType.HealthyBody,windowWidth + 80, 50 )
+    t2 = Text(Point(windowWidth + 150, 50), "Healthy Cells")
+    t2.draw(win)
+
+    
+    i1 = Cell(CellType.InfectedBody,windowWidth + 80, 80 )
+    t3 = Text(Point(windowWidth + 280, 80), "Infected Cells: cells that the pathogen has infected.")
+    t4 = Text(Point(windowWidth + 280, 95), "Infected Cells spawn two pathogens after 5 seconds")
+    t3.draw(win)
+    t4.draw(win)
+         
 
 def doAll():
     
-
+    ShowLegend()
     while True:
          for i in range(0, len(pathogenArray)):
              pathogen = pathogenArray[i]
