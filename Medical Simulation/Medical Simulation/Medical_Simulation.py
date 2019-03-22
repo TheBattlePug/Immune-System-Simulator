@@ -4,7 +4,7 @@ from enum import *
 import time
 
 windowHeight = 300
-windowWidth = 400
+windowWidth = 500
 
 win = GraphWin("Human Body", 1000, 600)
 
@@ -29,14 +29,7 @@ class Cell:
         self.Timer = 0
         self.Draw(x, y)
    
-    #def Move(self, newX, newY):
-    #    if (self.Type != CellType.DeadPathogen):
-    #        visual = self.Visual;
-    #        visual.undraw()
-    #        self.Draw(newX, newY)
-    #    else:
-    #        self.Visual.undraw()
-            
+    
     def Move(self):
         if (self.Type == CellType.B or self.Type == CellType.T or self.Type == CellType.Pathogen or self.Type == CellType.Macrophage):
             speed = 0
@@ -204,17 +197,49 @@ def ShowLegend():
     t1 = Text(Point(windowWidth + 100, 20), "Legend:")
     t1.draw(win)
 
-    h1 = Cell(CellType.HealthyBody,windowWidth + 80, 50 )
+    h1 = Cell(CellType.HealthyBody, windowWidth + 80, 50 )
     t2 = Text(Point(windowWidth + 150, 50), "Healthy Cells")
     t2.draw(win)
 
-    
-    i1 = Cell(CellType.InfectedBody,windowWidth + 80, 80 )
+    h2 = Cell(CellType.InfectedBody, windowWidth + 80, 80 )
     t3 = Text(Point(windowWidth + 280, 80), "Infected Cells: cells that the pathogen has infected.")
-    t4 = Text(Point(windowWidth + 280, 95), "Infected Cells spawn two pathogens after 5 seconds")
+    t4 = Text(Point(windowWidth + 287, 95), "Infected Cells spawn two pathogens after 5 seconds.")
     t3.draw(win)
     t4.draw(win)
-         
+
+    h5 = Cell(CellType.Dead, windowWidth + 80, 125)
+    t8 = Text(Point(windowWidth + 276, 125), "Killed Cells: infected cells that were killed by T-Cell" )
+    t8.draw(win)
+
+    h3 = Cell(CellType.PathogenSpawned, windowWidth + 80, 155)   
+    t5 = Text(Point(windowWidth + 277, 155), "Dead Cells: cells that have been infected, but they")
+    t6 = Text(Point(windowWidth + 225, 170), "have now released two pathogens.")
+    t5.draw(win)
+    t6.draw(win)
+
+    h4 = Cell(CellType.Pathogen, windowWidth + 80, 210)
+    t7 = Text(Point(windowWidth + 259, 210), "Pathogen: a virus that infects cells to multiply.")
+    t7.draw(win)
+
+    h6 = Cell(CellType.Macrophage, windowWidth + 80, 240)
+    t9 = Text(Point(windowWidth + 288, 235), "Macrophage: immune cell that engulfs pathogen and")
+    t10 = Text(Point(windowWidth + 129, 250), "kills it.")
+    t9.draw(win)
+    t10.draw(win)
+
+
+    h7 = Cell(CellType.B, windowWidth + 80, 280)
+    t11 = Text(Point(windowWidth + 290, 280), "B-Cell: Releases antibodies that traps the pathogen")
+    t12 = Text(Point(windowWidth + 205, 295), "and restricts its movement.")
+    t11.draw(win)
+    t12.draw(win)
+
+    h8 = Cell(CellType.T, windowWidth + 80, 325)
+    t13 = Text(Point(windowWidth + 198, 325), "T-Cell: kills infected cells")
+    t13.draw(win)
+
+
+
 
 def doAll():
     
