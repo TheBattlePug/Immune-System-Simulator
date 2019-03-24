@@ -135,6 +135,7 @@ class Cell:
             visual.setFill(color)
 
         visual.draw(win)
+        del self.Visual
         self.Visual = visual
         self.X = x
         self.Y = y
@@ -183,11 +184,10 @@ for i in range(0, macrophageAmount):
 
 def redrawCell():   
 
-    for i in range(0,len(cellArray)):
-        cell = cellArray[i]
+    for cell in cellArray:
         
-        for j in range(0, len(pathogenArray)):
-            pathogen = pathogenArray[j]
+        
+        for pathogen in pathogenArray:
             
 
             # if pathogen touches a healty cell, mark cell as infected and kill mark pathogen as dead.
@@ -292,14 +292,15 @@ def doAll():
     ShowLegend()
     while True:
          
-         for i in range(0, len(pathogenArray)):
-             pathogen = pathogenArray[i]
+         for pathogen in pathogenArray:
              pathogen.Move()
          
+
          tCell.Move()
-         #bCell.Move()
+
          for m in macrophageArray:
             m.Move()
+
          redrawCell()
          time.sleep(0.2)
 
