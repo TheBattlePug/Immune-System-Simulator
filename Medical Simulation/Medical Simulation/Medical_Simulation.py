@@ -51,7 +51,7 @@ class Cell:
         if (self.Type == CellType.Macrophage):
             self.MovingSpeed = 20
             self.MovementAngle = randrange(0,360)
-            self.Size = 20
+            self.Size = 15
 
         if (self.Type == CellType.DeadPathogen):
             self.MovingSpeed = 0
@@ -167,7 +167,7 @@ for i in range(0, cellAmount):
 tCell = Cell(CellType.T, 10, windowHeight/2)
 
 #bCell parameters
-bCell = Cell(CellType.B, windowWidth - 10, windowHeight/2)
+#bCell = Cell(CellType.B, windowWidth - 10, windowHeight/2)
 
 #Macrophage parameters
 macrophage = Cell(CellType.Macrophage, windowWidth/3, windowHeight/3)
@@ -208,49 +208,72 @@ def ShowLegend():
     plate = Rectangle(Point(0, 0), Point(windowWidth, windowHeight))
     plate.draw(win)
 
-    t1 = Text(Point(windowWidth + 100, 20), "Legend:")
-    t1.draw(win)
+    rowY = 20
 
-    h1 = Cell(CellType.HealthyBody, windowWidth + 80, 50 )
-    t2 = Text(Point(windowWidth + 150, 50), "Healthy Cells")
+    t1 = Text(Point(windowWidth + 100, rowY), "Legend:")
+    t1.draw(win)
+    
+    rowY += 30
+
+    h4 = Cell(CellType.Pathogen, windowWidth + 80, rowY)
+    t7 = Text(Point(windowWidth + 216, rowY), "Virus: infects cells and multiplies.")
+    t7.draw(win)
+    
+    rowY += 30
+
+    h8 = Cell(CellType.T, windowWidth + 80, rowY)
+    t13 = Text(Point(windowWidth + 189, rowY), "T-Cell: kills infected cells.")
+    t13.draw(win)
+
+    rowY += 30
+
+    h1 = Cell(CellType.HealthyBody, windowWidth + 80, rowY )
+    t2 = Text(Point(windowWidth + 150, rowY), "Healthy Cells")
     t2.draw(win)
 
-    h2 = Cell(CellType.InfectedBody, windowWidth + 80, 80 )
-    t3 = Text(Point(windowWidth + 280, 80), "Infected Cells: cells that the pathogen has infected.")
-    t4 = Text(Point(windowWidth + 287, 95), "Infected Cells spawn two pathogens after 5 seconds.")
+    rowY += 30
+
+    h2 = Cell(CellType.InfectedBody, windowWidth + 80, rowY )
+    t3 = Text(Point(windowWidth + 259, rowY), "Infected Cells: cells that the virus has infected.")
+
+    rowY += 18
+
+    t4 = Text(Point(windowWidth + 270, rowY), "Infected Cells spawn two viruses after 5 seconds.")
     t3.draw(win)
     t4.draw(win)
 
-    h5 = Cell(CellType.Dead, windowWidth + 80, 125)
-    t8 = Text(Point(windowWidth + 276, 125), "Killed Cells: infected cells that were killed by T-Cell" )
+    rowY += 30
+
+    h5 = Cell(CellType.Dead, windowWidth + 80, rowY)
+    t8 = Text(Point(windowWidth + 276, rowY), "Killed Cells: infected cells that were killed by T-Cell." )
     t8.draw(win)
 
-    h3 = Cell(CellType.PathogenSpawned, windowWidth + 80, 155)   
-    t5 = Text(Point(windowWidth + 277, 155), "Dead Cells: cells that have been infected and")
-    t6 = Text(Point(windowWidth + 225, 170), "have released two pathogens.")
+    rowY += 30
+
+    h3 = Cell(CellType.PathogenSpawned, windowWidth + 80, rowY)   
+    t5 = Text(Point(windowWidth + 257, rowY), "Dead Cells: cells that have been infected and")
+
+    rowY += 18
+
+    t6 = Text(Point(windowWidth + 194, rowY), "have released two viruses.")
     t5.draw(win)
     t6.draw(win)
 
-    h4 = Cell(CellType.Pathogen, windowWidth + 80, 210)
-    t7 = Text(Point(windowWidth + 259, 210), "Pathogen: a virus that infects cells to multiply.")
-    t7.draw(win)
+    rowY += 30
+   
 
-    h6 = Cell(CellType.Macrophage, windowWidth + 80, 240)
-    t9 = Text(Point(windowWidth + 288, 235), "Macrophage: immune cell that engulfs pathogen and")
-    t10 = Text(Point(windowWidth + 129, 250), "kills it.")
+    h6 = Cell(CellType.Macrophage, windowWidth + 80, rowY)
+    t9 = Text(Point(windowWidth + 253, rowY), "Macrophage: immune cell that kills viruses.")
     t9.draw(win)
-    t10.draw(win)
+    rowY += 30
 
+    #h7 = Cell(CellType.B, windowWidth + 80, 280)
+    #t11 = Text(Point(windowWidth + 290, 280), "B-Cell: Releases antibodies that traps the pathogen")
+    #t12 = Text(Point(windowWidth + 205, 295), "and restricts its movement.")
+    #t11.draw(win)
+    #t12.draw(win)
 
-    h7 = Cell(CellType.B, windowWidth + 80, 280)
-    t11 = Text(Point(windowWidth + 290, 280), "B-Cell: Releases antibodies that traps the pathogen")
-    t12 = Text(Point(windowWidth + 205, 295), "and restricts its movement.")
-    t11.draw(win)
-    t12.draw(win)
-
-    h8 = Cell(CellType.T, windowWidth + 80, 325)
-    t13 = Text(Point(windowWidth + 198, 325), "T-Cell: kills infected cells")
-    t13.draw(win)
+    
 
 
 
@@ -265,7 +288,7 @@ def doAll():
              pathogen.Move()
          
          tCell.Move()
-         bCell.Move()
+         #bCell.Move()
          macrophage.Move()
          redrawCell()
          time.sleep(0.2)
