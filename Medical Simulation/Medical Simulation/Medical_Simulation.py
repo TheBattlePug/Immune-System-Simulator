@@ -170,7 +170,15 @@ tCell = Cell(CellType.T, 10, windowHeight/2)
 #bCell = Cell(CellType.B, windowWidth - 10, windowHeight/2)
 
 #Macrophage parameters
-macrophage = Cell(CellType.Macrophage, windowWidth/3, windowHeight/3)
+macrophageAmount = 2
+macrophageArray = []
+for i in range(0, macrophageAmount):
+    h = randrange(20, windowHeight-20)
+    w = randrange(20, windowWidth-20)
+    s = Cell(CellType.Macrophage, w, h)
+    macrophageArray.append(s)
+
+
    
 
 def redrawCell():   
@@ -189,8 +197,9 @@ def redrawCell():
 
 
             # if macrophage touches a pathogen then it kills it.
-            if (abs(pathogen.X - macrophage.X) <= (macrophage.Size + pathogen.Size) and abs(pathogen.Y-macrophage.Y) <= (macrophage.Size + pathogen.Size)):
-                pathogen.Type = CellType.DeadPathogen
+            for m in macrophageArray: 
+                if (abs(pathogen.X - m.X) <= (m.Size + pathogen.Size) and abs(pathogen.Y-m.Y) <= (m.Size + pathogen.Size)):
+                    pathogen.Type = CellType.DeadPathogen
 
 
         # if tCell touches an infected cell, mark as dead.   
@@ -289,7 +298,8 @@ def doAll():
          
          tCell.Move()
          #bCell.Move()
-         macrophage.Move()
+         for m in macrophageArray:
+            m.Move()
          redrawCell()
          time.sleep(0.2)
 
