@@ -30,23 +30,32 @@ class Cell:
         self.Timer = 0
         self.MovementAngle = 0
         self.MovingSpeed = 0
+        self.Size = 10
+
 
         if (self.Type == CellType.B):
             self.MovingSpeed = 10 
             self.MovementAngle = randrange(0,360)
+            self.Size = 15
 
         if (self.Type == CellType.T):
             self.MovingSpeed = 20
             self.MovementAngle = randrange(0,360)
+            self.Size = 8
 
         if (self.Type == CellType.Pathogen):
             self.MovingSpeed = 15
             self.MovementAngle = randrange(0,360)
-            
-        if (self.Type == CellType.Macrophage):
-            self.MovingSpeed = 25
-            self.MovementAngle = randrange(0,360)
+            self.Size = 5
 
+        if (self.Type == CellType.Macrophage):
+            self.MovingSpeed = 20
+            self.MovementAngle = randrange(0,360)
+            self.Size = 20
+
+        if (self.Type == CellType.DeadPathogen):
+            self.MovingSpeed = 0
+            self.Size = 5
 
         self.Draw(x, y)
    
@@ -59,8 +68,16 @@ class Cell:
             b = self.MovingSpeed * sin(self.MovementAngle)
             newY = self.Y + b
 
-            #newX = adjust(newX, windowWidth)
-           # newY = adjust(newY, windowHeight)
+         
+            if (newX > windowWidth - self.Size or newX < self.Size):
+                self.MovementAngle = 180 - self.MovementAngle
+
+            if (newY > windowHeight - self.Size or newY < self.Size):
+                self.MovementAngle = 360 - self.MovementAngle
+
+
+
+
 
             visual = self.Visual;
             visual.undraw()
@@ -76,23 +93,18 @@ class Cell:
         color = 'black'
         
         if (self.Type == CellType.Dead):
-            size = 10
             color = 'gray'
 
         if (self.Type == CellType.T):
-            size = 8
             color = 'blue'
 
         if (self.Type == CellType.B): 
-            size = 15
             color = 'yellow'
         
         if (self.Type == CellType.HealthyBody): 
-            size = 10
             color = 'black'
 
         if (self.Type == CellType.InfectedBody): 
-            size = 10
             color = 'red'
             self.Timer = self.Timer + 1
             if (self.Timer == 50):
@@ -103,20 +115,17 @@ class Cell:
                 pathogenArray.append(pathogen2)
           
         if (self.Type == CellType.Macrophage): 
-            size = 20
             color = 'orange'
                 
-        if (self.Type == CellType.Pathogen): 
-            size = 5
+        if (self.Type == CellType.Pathogen):
             color = 'red'
 
         if (self.Type == CellType.PathogenSpawned):
-            size = 10
             color = 'black'
 
         
         p = Point(x, y)
-        visual = Circle(p, size)
+        visual = Circle(p, self.Size)
 
         if (self.Type == CellType.HealthyBody or self.Type == CellType.InfectedBody):
             visual.setOutline(color)
@@ -190,16 +199,7 @@ def redrawCell():
            
         cell.Draw(cell.X, cell.Y)
            
-def adjust(position, limit):
-    ret = position
 
-    if (position > limit):
-        ret = limit - 10
-             
-    if (position < 0):
-        ret = 10
-            
-    return ret  
 
 
 def ShowLegend():
