@@ -143,11 +143,6 @@ class Cell:
     
         
 
-class Pathogen:
-    def __init__ (self, x, y):
-        self.X = x
-        self.Y = y
-    path = 0
 
 #Creates an array of pathogens that develope over time   
 pathogenArray = []
