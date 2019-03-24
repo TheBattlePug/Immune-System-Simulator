@@ -2,6 +2,7 @@ from graphics import *
 from random import *
 from enum import *
 import time
+from math import *
 
 windowHeight = 300
 windowWidth = 500
@@ -27,28 +28,39 @@ class Cell:
         self.Y = y
         self.Visual = 0
         self.Timer = 0
+        self.MovementAngle = 0
+        self.MovingSpeed = 0
+
+        if (self.Type == CellType.B):
+            self.MovingSpeed = 10 
+            self.MovementAngle = randrange(0,360)
+
+        if (self.Type == CellType.T):
+            self.MovingSpeed = 20
+            self.MovementAngle = randrange(0,360)
+
+        if (self.Type == CellType.Pathogen):
+            self.MovingSpeed = 15
+            self.MovementAngle = randrange(0,360)
+            
+        if (self.Type == CellType.Macrophage):
+            self.MovingSpeed = 25
+            self.MovementAngle = randrange(0,360)
+
+
         self.Draw(x, y)
    
     
     def Move(self):
-        if (self.Type == CellType.B or self.Type == CellType.T or self.Type == CellType.Pathogen or self.Type == CellType.Macrophage):
-            speed = 0
-            if (self.Type == CellType.B):
-                speed = 20
-            if (self.Type == CellType.T):
-                speed = 40
-            if (self.Type == CellType.Pathogen):
-                speed = 30
-            if (self.Type == CellType.Macrophage):
-                speed = 50
+        if (self.MovingSpeed > 0):
 
-            a = randrange( 0 - speed, speed)
+            a = self.MovingSpeed * cos(self.MovementAngle)
             newX = self.X + a
-            b = randrange( 0 - speed, speed)      
+            b = self.MovingSpeed * sin(self.MovementAngle)
             newY = self.Y + b
 
-            newX = adjust(newX, windowWidth)
-            newY = adjust(newY, windowHeight)
+            #newX = adjust(newX, windowWidth)
+           # newY = adjust(newY, windowHeight)
 
             visual = self.Visual;
             visual.undraw()
