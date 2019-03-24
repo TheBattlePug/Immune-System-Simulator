@@ -63,18 +63,19 @@ class Cell:
     def Move(self):
         if (self.MovingSpeed > 0):
 
-            a = self.MovingSpeed * cos(self.MovementAngle)
+            a = self.MovingSpeed * cos(radians(self.MovementAngle))
             newX = self.X + a
-            b = self.MovingSpeed * sin(self.MovementAngle)
+            b = self.MovingSpeed * sin(radians(self.MovementAngle))
             newY = self.Y + b
 
          
             if (newX > windowWidth - self.Size or newX < self.Size):
                 self.MovementAngle = 180 - self.MovementAngle
+                newX = self.X
 
             if (newY > windowHeight - self.Size or newY < self.Size):
                 self.MovementAngle = 360 - self.MovementAngle
-
+                newY = self.Y
 
 
 
@@ -86,6 +87,7 @@ class Cell:
 
         if (self.Type == CellType.DeadPathogen):
            self.Visual.undraw()
+           self.MovingSpeed = 0
 
     def Draw(self, x, y):
         
@@ -181,22 +183,22 @@ def redrawCell():
             
 
             # if pathogen touches a healty cell, mark cell as infected and kill mark pathogen as dead.
-            if (abs(pathogen.X-cell.X)<=15 and abs(pathogen.Y-cell.Y)<=15 and cell.Type == CellType.HealthyBody):
+            if (abs(pathogen.X-cell.X) <= (cell.Size + pathogen.Size) and abs(pathogen.Y-cell.Y) <= (cell.Size + pathogen.Size) and cell.Type == CellType.HealthyBody):
                 cell.Type = CellType.InfectedBody
                 pathogen.Type = CellType.DeadPathogen
 
 
             # if macrophage touches a pathogen then it kills it.
-            if (abs(pathogen.X - macrophage.X) <= 55 and abs(pathogen.Y-macrophage.Y)<= 55):
+            if (abs(pathogen.X - macrophage.X) <= (macrophage.Size + pathogen.Size) and abs(pathogen.Y-macrophage.Y) <= (macrophage.Size + pathogen.Size)):
                 pathogen.Type = CellType.DeadPathogen
 
 
         # if tCell touches an infected cell, mark as dead.   
-        if (abs(tCell.X-cell.X)<=18 and abs(tCell.Y-cell.Y)<=18 and cell.Type == CellType.InfectedBody):
+        if (abs(tCell.X-cell.X) <= (tCell.Size + cell.Size) and abs(tCell.Y-cell.Y) <= (tCell.Size + cell.Size) and cell.Type == CellType.InfectedBody):
                 cell.Type = CellType.Dead
 
  
-           
+          
         cell.Draw(cell.X, cell.Y)
            
 
@@ -224,8 +226,8 @@ def ShowLegend():
     t8.draw(win)
 
     h3 = Cell(CellType.PathogenSpawned, windowWidth + 80, 155)   
-    t5 = Text(Point(windowWidth + 277, 155), "Dead Cells: cells that have been infected, but they")
-    t6 = Text(Point(windowWidth + 225, 170), "have now released two pathogens.")
+    t5 = Text(Point(windowWidth + 277, 155), "Dead Cells: cells that have been infected and")
+    t6 = Text(Point(windowWidth + 225, 170), "have released two pathogens.")
     t5.draw(win)
     t6.draw(win)
 
@@ -257,6 +259,7 @@ def doAll():
     
     ShowLegend()
     while True:
+         
          for i in range(0, len(pathogenArray)):
              pathogen = pathogenArray[i]
              pathogen.Move()
@@ -266,7 +269,35 @@ def doAll():
          macrophage.Move()
          redrawCell()
          time.sleep(0.2)
+
+         activePathogens = False
+         for p in pathogenArray:
+             if (p.Type == CellType.Pathogen):
+                 activePathogens = True
          
+         infectedCells = False
+         for c in cellArray:
+             if (c.Type == CellType.InfectedBody):
+                 infectedCells = True
+       
+
+
+         if (not activePathogens and not infectedCells):
+            print("All pathogens have been killed.")
+            print("The immune system has won")
+            break
+
+         healthyCells = False
+         for c in cellArray:
+             if (c.Type == CellType.HealthyBody):
+                 healthyCells = True
+
+         if (not healthyCells):
+
+            print("There are no more healthy cells")
+            print("The pathogens have won")
+            break
+
 
 doAll()
 
