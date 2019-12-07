@@ -40,25 +40,7 @@ namespace Climate_Change_Project
 
         private void SliderDistance_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            cover = new Line();
-
-            //cover.X1 = Earth.Margin.Left /* - DistanceSlider.Value;*/;
-            //cover.Y1 = Earth.Margin.Top + Earth.ActualHeight / 2 - 50 ;
-
-            //cover.X2 = Earth.Margin.Left /* - DistanceSlider.Value;*/;
-            //cover.Y2 = Earth.Margin.Top + Earth.ActualHeight / 2 + 50;
-
-            cover.X1 = 0;
-            cover.Y1 = 0;
-
-            cover.X2 = canvas.ActualWidth;
-            cover.Y2 = canvas.ActualHeight;
-
-           
-            cover.StrokeThickness = 1;
-            cover.Stroke = Brushes.Black;
-
-            canvas.Children.Add(cover);
+            
 
         }
 
@@ -67,9 +49,6 @@ namespace Climate_Change_Project
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            SliderDistance_ValueChanged(null, null);
-        }
+       
     }
 }
