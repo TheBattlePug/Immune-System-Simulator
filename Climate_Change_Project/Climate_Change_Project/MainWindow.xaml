@@ -5,31 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Climate_Change_Project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="993.733">
-    <Grid Margin="49,76,254,76" RenderTransformOrigin="0.453,0.428">
+        Title="MainWindow" Height="600" Width="1000">
+    <Grid x:Name="myGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="491*"/>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="38*"/>
-            <ColumnDefinition Width="154*"/>
+            <ColumnDefinition Width="500*"/>
+            <ColumnDefinition Width="190*"/>
         </Grid.ColumnDefinitions>
+        <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="437" Margin="30,44,0,0" VerticalAlignment="Top" Width="696"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="878,464,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click"/>
+
+
         <Label Content="Space" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-2,-34,0,0" Grid.ColumnSpan="2" Height="26" Width="41"/>
         <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="247" Stroke="Black" VerticalAlignment="Top" Width="469" Margin="10,10,0,0" Grid.ColumnSpan="2"/>
         <Ellipse Fill="#FFFF9327" HorizontalAlignment="Left" Height="150" Stroke="OrangeRed" VerticalAlignment="Top" Width="150" Margin="21,59,0,0" Grid.ColumnSpan="2"/>
-        <Ellipse Grid.ColumnSpan="2" Fill="#FF2626FD" HorizontalAlignment="Left" Height="43" Stroke="Blue" VerticalAlignment="Top" Width="43" Margin="423,114,0,0"/>
+        <Ellipse x:Name="Earth" Grid.ColumnSpan="2" Fill="#FF2626FD" HorizontalAlignment="Left" Height="43" Stroke="Blue" VerticalAlignment="Top" Width="43" Margin="423,114,0,0"/>
+
         <Label x:Name="SunLabel" Grid.ColumnSpan="2" Content="Sun" HorizontalAlignment="Left" Height="27" Margin="78,32,0,0" VerticalAlignment="Top" Width="33" RenderTransformOrigin="0.81,0.226"/>
         <Label Grid.ColumnSpan="2" Content="Earth" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="423,88,0,0" RenderTransformOrigin="0.623,0.517" Width="43" Height="26"/>
-        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Margin="1,10,-18,0" Grid.Column="4" Height="18"/>
-        <Label Content="Latitude of destination" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="14.965,-0.142" Margin="1,-21,-18,0" Width="171" Grid.Column="4" Height="26"/>
-        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Margin="1,10,-18,0" Grid.Column="4" Height="18"/>
-        <Label Content="Latitude of destination" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="14.965,-0.142" Margin="1,-21,-18,0" Width="171" Grid.Column="4" Height="26"/>
-        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Margin="1,59,-18,0" Grid.Column="4" Height="18"/>
-        <Label Content="Longitude of Destination" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="4" Margin="0,28,-18,0" Width="172" RenderTransformOrigin="0.268,0.432" Height="26"/>
-        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="162" Grid.Column="4" Margin="1,114,-9,0" Height="18"/>
-        <Label Content="Distance from Earth" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="4" Margin="0,88,0,0" Width="153" Height="26"/>
-        <Label Content="Controlled Temperature" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="4" Margin="1,139,0,0" Width="143"/>
-        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="162" Grid.Column="4" Margin="1,170,-9,0"/>
-
+        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Margin="0,10,0,0" Grid.Column="2" Height="18" ValueChanged="SliderLatitude_ValueChanged"/>
+        <Label Content="Latitude of destination" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="14.965,-0.142" Margin="0,-21,0,0" Width="171" Grid.Column="2" Height="26"/>
+        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Margin="0,59,0,0" Grid.Column="2" Height="18" ValueChanged="SliderLongitude_ValueChanged" Grid.ColumnSpan="2"/>
+        <Label Content="Longitude of Destination" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Margin="0,28,0,0" Width="172" RenderTransformOrigin="0.268,0.432" Height="26"/>
+        <Slider x:Name="DistanceSlider" HorizontalAlignment="Right" VerticalAlignment="Top" Width="170" Grid.Column="2" Margin="0,114,0,0" Height="18" ValueChanged="SliderDistance_ValueChanged"/>
+        <Label Content="Distance from Earth" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Margin="0,88,0,0" Width="153" Height="26"/>
+        <Label Content="Controlled Temperature" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Margin="0,139,0,0" Width="143" Height="26"/>
+        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Grid.Column="2" Margin="0,170,0,0" ValueChanged="SliderTemperature_ValueChanged" Height="18"/>
+        
     </Grid>
 </Window>
