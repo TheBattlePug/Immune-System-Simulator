@@ -27,11 +27,7 @@ namespace Climate_Change_Project
             InitializeComponent();
           
         }
-
-        private void SliderLatitude_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
-        }
+              
 
         private void SliderLongitude_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -55,8 +51,9 @@ namespace Climate_Change_Project
 
         private void SliderTemperature_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-           
+            double m = e.NewValue;
 
+            Screen.Fill.Opacity = m * 0.01;
         }       
     }
 }
